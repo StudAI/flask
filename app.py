@@ -59,10 +59,10 @@ def get_matches_array():
     with open('users.json') as f:
         data = json.load(f)
 
-    clusterData = []
+    clusterData = [[1,1,1,1,1,1,1,1,1,1]]
     for i in data:
-        clusterData.append([i["math"], i["science"], i["english"], i["engineering"], i["grade level"],
-                        i["extraversion"], i["agreeableness"], i["conscientientiousness"], i["neuroticism"], i["openness"]])
+        clusterData.append([i["math"], i["science"], i["english"], i["engineering"], i["grade_level"],
+                        i["extraversion"], i["agreeableness"], i["conscientiousness"], i["neuroticism"], i["openness"]])
     clusterData = np.array(clusterData)
 
     # km is a numpy array where index = index in users and the value = cluster number
@@ -71,12 +71,15 @@ def get_matches_array():
     
     # the response this request should return -> an array of dictionaries where each dictionary is in the format of { person1_uuid: person2_uuid }
     res = []
-    
-    for i in range(len(km)):
-        match_id = get_match_id(i, km[i], km, data)
-        res.append({data[i]["user_id"]: match_id})
-        
+    userCluster = km[0]
 
+    for i in range(1,len(km)):
+        if userCluster == km[i]:
+            res.append({"id": data[i]["user_id"]})
+    
+    return jsonify({
+        "matches": res[0:5]
+    })
     # if clusterData:
     #     return jsonify({
     #         "Message": f"Welcome {param} to our awesome platform!!",
