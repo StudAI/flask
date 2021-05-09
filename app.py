@@ -52,7 +52,7 @@ def get_match_id(start_idx, target, arr, data):
     length = len(arr)
     for i in range(start_idx,length):
         if arr[i] == target:
-            return data[i]["uuid"]
+            return data[i]["user_id"]
 
 @app.route('/matches', methods=['POST'])
 def get_matches_array():
@@ -74,7 +74,7 @@ def get_matches_array():
     
     for i in range(len(km)):
         match_id = get_match_id(i, km[i], km, data)
-        res.append({data[i]["uuid"]: match_id})
+        res.append({data[i]["user_id"]: match_id})
         
 
     # if clusterData:
